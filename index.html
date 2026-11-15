@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSVA</title>
+
+     <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #F1F0E8;
+            color: #242820;
+            font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+        }
+
+        /* Header */
+        header {
+            background: #171914;
+            color: #E4C46A;
+            border: 3px solid #A9893D;
+            border-left: none;
+            border-right: none;
+            padding: 22px 6%;
+            box-shadow: 0 3px 12px #0003;
+        }
+
+        header h1 {
+            margin: 0;
+            letter-spacing: 3px;
+            font-size: 27px;
+        }
+
+        header p {
+            color: #BDB18A;
+            margin: 6px 0 0;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        /* Main */
+        main {
+            width: 90%;
+            max-width: 1400px;
+            margin: 35px auto;
+            min-height: 550px;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: #20251D;
+            border: 2px solid #B99A4A;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 22px;
+            color: #E5D39B;
+        }
+
+        .toolbar button {
+            background: #174D38;
+            color: #F0E4B7;
+            border: 1px solid #B99A4A;
+            border-radius: 5px;
+            padding: 9px 23px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+        }
+
+        .toolbar button:hover {
+            background: #27704F;
+            color: white;
+            box-shadow: 0 0 8px #C5A34A66;
+        }
+
+        .toolbar input {
+            color: #F0E4B7;
+            max-width: 260px;
+        }
+
+    #analysis-sidebar {
+        position: fixed;
+        top: 0;
+        right: -320px;
+
+        width: 300px;
+        height: 100vh;
+
+        background: #171914;
+        color: #C5A34A;
+
+        padding: 20px;
+        box-sizing: border-box;
+
+        transition: right 0.3s ease;
+        z-index: 1000;
+    }
+
+    /* 選單開啟時 */
+    #analysis-sidebar.active {
+        right: 0;
+    }
+
+        /* Content panels */
+        .panel {
+            background: white;
+            border: 1px solid #B99A4A;
+            border-radius: 8px;
+            padding: 18px;
+            box-shadow: 0 3px 12px #00000012;
+        }
+
+        .panel-title {
+            color: #174D38;
+            border-bottom: 2px solid #C5A34A;
+            padding-bottom: 10px;
+            margin: 0 0 18px;
+            font-size: 19px;
+        }
+
+        #chart-container {
+            width: 100%;
+            margin: auto;
+        }
+
+        #table-container {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* Tabulator - Main */
+        #example-table {
+            margin: 0;
+        }
+
+        .tabulator {
+            background: #F7F8EF !important;
+            border: 2px solid #A9893D !important;
+            border-radius: 6px;
+            color: #26372B !important;
+            font-size: 14px;
+        }
+
+        /* Table Header */
+        .tabulator .tabulator-header {
+            background: #174D38 !important;
+            color: #F0E4B7 !important;
+            border-bottom: 3px solid #C5A34A !important;
+        }
+
+        .tabulator .tabulator-header .tabulator-col {
+            background: #174D38 !important;
+            color: #F0E4B7 !important;
+            border-right: 1px solid #64816A !important;
+        }
+
+        .tabulator .tabulator-header .tabulator-col-title {
+            font-weight: 600;
+        }
+
+        .tabulator .tabulator-header .tabulator-col.tabulator-sortable:hover {
+            background: #27694C !important;
+        }
+
+        /* Table Body */
+        .tabulator .tabulator-row {
+            background: #F7F8EF !important;
+            border-bottom: 1px solid #DCE2CF !important;
+        }
+
+        .tabulator .tabulator-row:nth-child(even) {
+            background: #EAF0DF !important;
+        }
+
+        .tabulator .tabulator-row:hover {
+            background: #D7E7C8 !important;
+        }
+
+        .tabulator .tabulator-cell {
+            border-right: 1px solid #D8DFCC !important;
+            color: #26372B;
+        }
+
+        /* Pagination */
+        .tabulator .tabulator-footer {
+            background: #174D38 !important;
+            color: #F0E4B7 !important;
+            border-top: 2px solid #C5A34A !important;
+        }
+
+        .tabulator .tabulator-footer .tabulator-page {
+            color: #F0E4B7 !important;
+            border: 1px solid #B99A4A !important;
+            background: #263C2D !important;
+        }
+
+        .tabulator .tabulator-footer .tabulator-page.active {
+            background: #C5A34A !important;
+            color: #171914 !important;
+        }
+
+        /* Filters */
+        .tabulator .tabulator-header-filter input {
+            background: #F7F8EF;
+            border: 1px solid #B99A4A;
+            border-radius: 3px;
+            padding: 4px;
+        }
+
+        /* Footer */
+        footer {
+            background: #171914;
+            color: #C5A34A;
+            border: 3px solid #A9893D;
+            border-left: none;
+            border-right: none;
+            padding: 25px 6%;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        footer a {
+            color: #E4C46A;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            main {
+                width: 96%;
+                margin: 18px auto;
+            }
+
+            header h1 {
+                font-size: 22px;
+            }
+
+            .toolbar {
+                gap: 8px;
+            }
+
+            .toolbar button {
+                padding: 8px 14px;
+            }
+
+            .panel {
+                padding: 8px;
+            }
+        }
+    </style>
+
+    <link
+        href="https://unpkg.com/tabulator-tables@6.3.1/dist/css/tabulator.min.css"
+        rel="stylesheet"
+    >
+</head>
+<body>
+    <Header>
+        <h1>CSV分析工具</h1>
+    </Header>
+    <main>
+        <div>
+            <button id="to_chart">
+                圖表
+            </button>
+            <button id="to_table">
+                資料表
+            </button>
+            <button id="average">
+                平均數
+            </button>
+            導入csv:<input id="csv-export" type="file" accept=".csv">
+        </div>
+        <div id = "analysis-sidebar">
+            <button id="close_sidebar">[X]</button>
+
+            <h2>平均數分析</h2>
+            <p>請選擇要分析的欄位</p>
+
+            <div id="field-options">
+                <!-- JavaScript 會在這裡產生欄位選項 -->
+            </div>
+            <!--<label id="result">Result</label>-->
+        </div>
+        <div id="chart-container" style="width: 80%; margin: auto;">
+            <canvas id="myChart"></canvas>
+        </div>
+        <div id="table-container">
+            <div id = "example-table"></div>
+        </div>
+    </main>
+    <footer>
+        我的個人網站:https://pchengxiang.github.io/PersonalWebsite/
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/6.4.0/js/tabulator.min.js"></script>
+        <script src="main.js"></script>
+    </footer>
+</body>
+</html>
